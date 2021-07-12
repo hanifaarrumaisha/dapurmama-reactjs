@@ -49,74 +49,82 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 # Learning Notes
 ## React Hooks
 - React Hooks merupakan fitur dari react yang memungkinkan functional component menjadi stateful dan memiliki lifecycle function. Hooks utama untuk membuat state dalam functional component adalah **useState** dan untuk lifecycle function adalah **useEffect**.
-## useState
+- Penggunaan react hooks dalam hal ini useState dan useEffect memudahkan kita untuk memisahkan unrelated logic. Gunakan bila sebelumnya kita dipaksa menggabungkan logic yang tidak relevant berdasarkan lifecycle, dengan react hooks kita bisa memisahkan setiap state dengan setiap lifecycle, seperti dapat dilihat (disini)[https://reactjs.org/docs/hooks-effect.html#tip-use-multiple-effects-to-separate-concerns].
+### State Hooks (useState)
 React hooks built in supaya bisa jadi statefull. Merupakan function yang returnnya itu array [state, setState]. state adalah current state, sementara setState adalah function untuk ubah statenya.
 
-## useEffect
-- react hooks function yang dipanggil setiap kali component selesai dirender. Punya dua parameter, parameter pertama function yang akan dijalankan, parameter kedua adalah array dependencies (function ini dijalankan berdasarkan variable apa yang berubah). Kalau parameter kedua kosong, artinya function di parameter pertama akan dijalankan setiap kali component tersebut dirender. 
-- **componentDidMount** -> Kalau parameter kedua diisi empty array, dia jadi mirip componentDidMount, artinya dia akan dipanggil ketika ga ada state apapun yang berubah, artinya itu pas pertama kali component di render.
-- **componentWillUnmount** -> Kalau ada dependenciesnya maka itu akan kayak componentDidUpdated. return dari useEffect selalu dijalankan setiap sebelum useEffect selanjutnya dijalankan. Kalau dalam case array dependencies merupakan empty array maka apa yang direturn merupakan function yang akan dijalankan ketika component di unmount, sehingga seperti componentWillUnmount.
-- ComponentWillMount → just add function before jsx line. Everything before the jsx will run before component rendered.  
+### Effect Hooks (useEffect)
+- react hooks function yang dipanggil setiap kali component selesai dirender. Punya dua parameter, parameter pertama function yang akan dijalankan, parameter kedua adalah array dependencies. Dependencies yang dimaksud adalah function yang ada pada parameter pertama dijalankan berdasarkan pada variable-variable yang didefinisikan pada array dependencies tersebut. Kalau parameter kedua kosong, artinya function di parameter pertama akan dijalankan setiap kali component tersebut dirender, karena tidak function tersebut tidak memiliki dependecies apapun, sehingga dapat berjalan sesuka hatinya. 
+- **componentDidMount** → Kalau parameter kedua diisi empty array, dia jadi mirip componentDidMount, artinya dia akan dipanggil ketika ga ada state apapun yang berubah, artinya itu pas pertama kali component di render.
+- **componentDidUpdate** → Kalau parameter kedua diisi dengan sesuatu, misal `[someState]`. Maka function pada parameter kedua hanya akan dijalankan pada saat pertama kali component dirender dan setiap kali `someState` mengalami perubahan. Ini cocok untuk menjaga sideeffect dari perubahan state lainnya. Misal kita tidak membutuhkan function ini berjalan ketika `anotherState` berubah. Maka penting mendefinisikan dependencies ketika tau suatu function hanya digunakan berdasarkan suatu state.
+- **componentWillUnmount** → Kalau ada dependenciesnya maka itu akan kayak componentDidUpdated. return dari useEffect selalu dijalankan setiap sebelum useEffect selanjutnya dijalankan. Kalau dalam case array dependencies merupakan empty array maka apa yang direturn merupakan function yang akan dijalankan ketika component di unmount, sehingga seperti componentWillUnmount.
+- **ComponentWillMount** → just add function before jsx line. Everything before the jsx will run before component rendered.  
 
 ## React Memo
-- React.memo(component): merupakan shouldComponentUpdate on functional components, make sure this component will be update when props are changes. If the return true that props are equals → will not rerender, and the return false → will rerender. 
+- React.memo(component): merupakan shouldComponentUpdate on functional components, make sure this component will be update when props are changes. 
+- **shouldComponentUpdate** merupakan penanda kapan saja component ini perlu diupdate. Supaya ketika yg diluar state yang ada di component ini dan diluar props yang jadi input komponen ini, component ini ga perlu dirender ulang. 
+- Bedanya shouldComponentUpdate dengan componentDidUpdate yaitu kalau shouldComponentUpdate ngomongin apa yang ngetrigger component ini dirender ulang berdasarkan perspektif parent, sementara componentDidUpdate ngomongin perubahan didalam component itu sendiri yang mentrigger update di component.
+- Nah React.Memo ini secara otomatis rerender hanya ketika input props dari component ini yg berubah. Ketika parent component punya state lain, component ini otomatis hanya berubah ketika input propsnya berubah.  
+- Tapi kita dapat menambahkan kostumisasi, dengan menambahkan parameter kedua berupa function yang mereturn boolean, dimana true berarti component tersebut tidak akan dirender, dan return false yang akan membuat component tersebut merender ulang. Kondisi ini berbanding terbalik dengan shouldComponentUpdate, contoh:
+    ```js
+        export default React.memo(Character, (prevProps, nextProps) => {
+            return nextProps.selectedChar === prevProps.selectedChar;
+        })
+    ```
+
+
+## Ref Hooks (useRef)
+#TODO
 
 ## Custom Hooks
 - Kita dapat membuat hooks function sendiri, dengan membuat hooks function kita dapat share stateful logic function tanpa perlu membuat component baru.
 - Pemanggilan custom hooks function harus ada di top level function (ga boleh ada di dalem if statement, for statement, atau didalam inner function).
-- 
+- Sesungguhnya custom hooks merupakan javascript function biasa yang menggunakan konvensional nama diawal dengan `use` dan biasanya memanggil hooks lainnya.
+- #TODO
+
 
 ## Common Error
-- react component selalu kerender sampai infinite
-    - itu karena ada useEffect yang salah passing dependencies. Contoh:
-        ```const fetchData = () => {
-    console.log(
-      'Sending Http request for new character with id ' + props.selectedChar
-    );
-    setIsLoading(true);
-    fetch('https://swapi.co/api/people/' + props.selectedChar)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Could not fetch person!');
-        }
-        return response.json();
-      })
-      .then(charData => {
-        const loadedCharacter = {
-          id: props.selectedChar,
-          name: charData.name,
-          height: charData.height,
-          colors: {
-            hair: charData.hair_color,
-            skin: charData.skin_color
-          },
-          gender: charData.gender,
-          movieCount: charData.films.length
-        };
-        setIsLoading(false);
-        setLoadedCharacter(loadedCharacter);
-      })
-      .catch(err => {
-        console.log(err);
-        setIsLoading(false);
-      });
-  };
+- Problem: react component selalu kerender sampai infinite loop
+    - Solution: itu karena ada useEffect yang salah passing dependencies. Contoh:
+        ```js
+        const fetchData = () => {
+            console.log('Sending Http request for new character with id ' + props.selectedChar);
+            setIsLoading(true);
+            fetch('https://swapi.co/api/people/' + props.selectedChar)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error('Could not fetch person!');
+                    }
+                    return response.json();
+                })
+                .then(charData => {
+                    const loadedCharacter = {
+                    id: props.selectedChar,
+                    name: charData.name,
+                    height: charData.height,
+                    colors: {
+                        hair: charData.hair_color,
+                        skin: charData.skin_color
+                    },
+                    gender: charData.gender,
+                    movieCount: charData.films.length
+                    };
+                    setIsLoading(false); // 1. AWARE THIS 
+                    setLoadedCharacter(loadedCharacter); // 2. AWARE THIS
+                })
+                .catch(err => {
+                    console.log(err);
+                    setIsLoading(false);
+                });
+            };
 
-  // componentDidUpdate(prevProps) {
-  //   console.log('Component did update');
-  //   if (prevProps.selectedChar !== props.selectedChar) {
-  //     this.fetchData();
-  //   }
-  // }
+        useEffect(() => {
+            fetchData();
+            return () => {
+                console.log('Cleaning up...');
+            };
+        }, [props.selectedChar]); // 3. AWARE THIS
+        ```
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  useEffect(() => {
-    fetchData();
-    return () => {
-      console.log('Cleaning up...');
-    };
-  }, [props.selectedChar]);
-```
+        Seperti dapat dilihat pada point 1 dan 2 bahwa function fetchdata melakukan update pada state, sehingga itu merupakan side effect yang memungkinkan suatu component melakukan rerender. Apabila dependencies [props.selectedChar] tidak ada, maka function fetchData akan terus dijalankan setiap kali component di render, karena tidak ada dependencies kapan useEffect itu dijalankan. Dengan menambahkan dependecies tersebut, function useEffect hanya akan dijalankakn ketika `props.selectedChar` berubah.
+        
