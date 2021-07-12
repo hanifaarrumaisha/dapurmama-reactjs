@@ -1,3 +1,4 @@
+# DAPURBUNDA (On Boarding Project with Reactjs)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -44,3 +45,78 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# Learning Notes
+## React Hooks
+- React Hooks merupakan fitur dari react yang memungkinkan functional component menjadi stateful dan memiliki lifecycle function. Hooks utama untuk membuat state dalam functional component adalah **useState** dan untuk lifecycle function adalah **useEffect**.
+## useState
+React hooks built in supaya bisa jadi statefull. Merupakan function yang returnnya itu array [state, setState]. state adalah current state, sementara setState adalah function untuk ubah statenya.
+
+## useEffect
+- react hooks function yang dipanggil setiap kali component selesai dirender. Punya dua parameter, parameter pertama function yang akan dijalankan, parameter kedua adalah array dependencies (function ini dijalankan berdasarkan variable apa yang berubah). Kalau parameter kedua kosong, artinya function di parameter pertama akan dijalankan setiap kali component tersebut dirender. 
+- **componentDidMount** -> Kalau parameter kedua diisi empty array, dia jadi mirip componentDidMount, artinya dia akan dipanggil ketika ga ada state apapun yang berubah, artinya itu pas pertama kali component di render.
+- **componentWillUnmount** -> Kalau ada dependenciesnya maka itu akan kayak componentDidUpdated. return dari useEffect selalu dijalankan setiap sebelum useEffect selanjutnya dijalankan. Kalau dalam case array dependencies merupakan empty array maka apa yang direturn merupakan function yang akan dijalankan ketika component di unmount, sehingga seperti componentWillUnmount.
+- ComponentWillMount → just add function before jsx line. Everything before the jsx will run before component rendered.  
+
+## React Memo
+- React.memo(component): merupakan shouldComponentUpdate on functional components, make sure this component will be update when props are changes. If the return true that props are equals → will not rerender, and the return false → will rerender. 
+
+## Custom Hooks
+- Kita dapat membuat hooks function sendiri, dengan membuat hooks function kita dapat share stateful logic function tanpa perlu membuat component baru.
+- Pemanggilan custom hooks function harus ada di top level function (ga boleh ada di dalem if statement, for statement, atau didalam inner function).
+- 
+
+## Common Error
+- react component selalu kerender sampai infinite
+    - itu karena ada useEffect yang salah passing dependencies. Contoh:
+        ```const fetchData = () => {
+    console.log(
+      'Sending Http request for new character with id ' + props.selectedChar
+    );
+    setIsLoading(true);
+    fetch('https://swapi.co/api/people/' + props.selectedChar)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Could not fetch person!');
+        }
+        return response.json();
+      })
+      .then(charData => {
+        const loadedCharacter = {
+          id: props.selectedChar,
+          name: charData.name,
+          height: charData.height,
+          colors: {
+            hair: charData.hair_color,
+            skin: charData.skin_color
+          },
+          gender: charData.gender,
+          movieCount: charData.films.length
+        };
+        setIsLoading(false);
+        setLoadedCharacter(loadedCharacter);
+      })
+      .catch(err => {
+        console.log(err);
+        setIsLoading(false);
+      });
+  };
+
+  // componentDidUpdate(prevProps) {
+  //   console.log('Component did update');
+  //   if (prevProps.selectedChar !== props.selectedChar) {
+  //     this.fetchData();
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  useEffect(() => {
+    fetchData();
+    return () => {
+      console.log('Cleaning up...');
+    };
+  }, [props.selectedChar]);
+```
