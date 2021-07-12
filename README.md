@@ -60,7 +60,7 @@ React hooks built in supaya bisa jadi statefull. Merupakan function yang returnn
 - **componentWillUnmount** → Kalau ada dependenciesnya maka itu akan kayak componentDidUpdated. return dari useEffect selalu dijalankan setiap sebelum useEffect selanjutnya dijalankan. Kalau dalam case array dependencies merupakan empty array maka apa yang direturn merupakan function yang akan dijalankan ketika component di unmount, sehingga seperti componentWillUnmount.
 - **ComponentWillMount** → just add function before jsx line. Everything before the jsx will run before component rendered.  
 
-## React Memo
+### React Memo
 - React.memo(component): merupakan shouldComponentUpdate on functional components, make sure this component will be update when props are changes. 
 - **shouldComponentUpdate** merupakan penanda kapan saja component ini perlu diupdate. Supaya ketika yg diluar state yang ada di component ini dan diluar props yang jadi input komponen ini, component ini ga perlu dirender ulang. 
 - Bedanya shouldComponentUpdate dengan componentDidUpdate yaitu kalau shouldComponentUpdate ngomongin apa yang ngetrigger component ini dirender ulang berdasarkan perspektif parent, sementara componentDidUpdate ngomongin perubahan didalam component itu sendiri yang mentrigger update di component.
@@ -73,17 +73,77 @@ React hooks built in supaya bisa jadi statefull. Merupakan function yang returnn
     ```
 
 
-## Ref Hooks (useRef)
+### Ref Hooks (useRef)
 #TODO
 
-## Custom Hooks
+### Custom Hooks (original documentation) [https://reactjs.org/docs/hooks-custom.html]
 - Kita dapat membuat hooks function sendiri, dengan membuat hooks function kita dapat share stateful logic function tanpa perlu membuat component baru.
 - Pemanggilan custom hooks function harus ada di top level function (ga boleh ada di dalem if statement, for statement, atau didalam inner function).
-- Sesungguhnya custom hooks merupakan javascript function biasa yang menggunakan konvensional nama diawal dengan `use` dan biasanya memanggil hooks lainnya.
-- #TODO
+- Sesungguhnya custom hooks merupakan javascript function biasa yang menggunakan konvensional nama diawal dengan `use` dan biasanya memanggil hooks lainnya. Sisanya function itu sangat flexible, bisa untuk 
+- (Use Your Imagination)[https://reactjs.org/docs/hooks-custom.html#useyourimagination] **When to use custom hooks?** -> Ga masalah untuk untuk menolak melakukan abstraksi dengan cepat. Normal kalau code kita mungkin akan jadi lebih panjang (jangan terlalu terburu-buru mengubahnya jadi hooks). Tapi sebisa mungkin dorong diri kita untuk menemukan case-case dimana custom hook dapat: 
+   - menyembunyikan complex logic dari UI component yang sebenarnya sederhana
+   - membantu kita menguraikan komponen yang berantakan.
+- contoh custom hooks:
+    ```js
+    import { useState, useEffect } from 'react';
 
+    function useFriendStatus(friendID) {
+    const [isOnline, setIsOnline] = useState(null);
 
-## Common Error
+    useEffect(() => {
+        function handleStatusChange(status) {
+        setIsOnline(status.isOnline);
+        }
+
+        ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+        return () => {
+        ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+        };
+    });
+
+    return isOnline;
+    }
+    ```
+- Contoh-contoh pemanggilan custom hooks
+    - Bisa panggil kayak biasa dan passing props sebagai inputnya
+        ```js
+        function FriendListItem(props) {
+            const isOnline = useFriendStatus(props.friend.id);
+
+            return (
+                <li style={{ color: isOnline ? 'green' : 'black' }}>
+                {props.friend.name}
+                </li>
+            );
+        }
+        ```
+    - Bisa langsung oper state sebagai props/input dari hooks
+        ```js
+        function ChatRecipientPicker() {
+        const [recipientID, setRecipientID] = useState(1);
+        const isRecipientOnline = useFriendStatus(recipientID);
+
+        return (
+            <>
+            <Circle color={isRecipientOnline ? 'green' : 'red'} />
+            <select
+                value={recipientID}
+                onChange={e => setRecipientID(Number(e.target.value))}
+            >
+                {friendList.map(friend => (
+                <option key={friend.id} value={friend.id}>
+                    {friend.name}
+                </option>
+                ))}
+            </select>
+            </>
+        );
+        }
+        ```
+        Bisa dilihat kalau recipientID yang merupakan state juga, 
+
+# Common Error
+## React Hooks
 - Problem: react component selalu kerender sampai infinite loop
     - Solution: itu karena ada useEffect yang salah passing dependencies. Contoh:
         ```js
