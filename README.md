@@ -142,6 +142,17 @@ React hooks built in supaya bisa jadi statefull. Merupakan function yang returnn
         ```
         Bisa dilihat kalau recipientID yang merupakan state juga, 
 
+### Reducer Hooks (useReducer)
+#TODO
+
+### Additional
+- (Hooks FAQ)[https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily]
+- (How to fetch data with React Hooks?)[https://www.robinwieruch.de/react-hooks-fetch-data]
+- (High Order Function)[https://reactjs.org/docs/higher-order-components.html]
+- (Refs and DOM)[https://reactjs.org/docs/refs-and-the-dom.html#:~:text=In%20the%20typical,an%20escape%20hatch.
+] - need to undestand before useRef
+
+# React-Redux
 # Common Error
 ## React Hooks
 - Problem: react component selalu kerender sampai infinite loop
