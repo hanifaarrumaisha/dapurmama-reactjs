@@ -1,55 +1,35 @@
-# DAPURBUNDA (On Boarding Project with Reactjs)
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# DDay
+## Tech Stack
+- React Native
+- Redux
+- React Navigation
+- React Saga
+- Jest
+- Redux Persist
+- Styled Component
 
 # Learning Notes
+## React Native
+
+### [Setup](https://reactnative.dev/docs/environment-setup)
+#### Requirement
+- JDK 8 or newer
+- NPM 12 or newer
+- Android Studio
+    - Android SDK
+    - Android SDK Platform
+    - Android Virtual Device
+
+#### How to Start
+- open project on Android Studio
+- pastikan AVD for Android 29 exists
+- run emulator
+- start metro `npx react-native start`
+- start your application `npx react-native run-android`
+
 ## React Hooks
 - React Hooks merupakan fitur dari react yang memungkinkan functional component menjadi stateful dan memiliki lifecycle function. Hooks utama untuk membuat state dalam functional component adalah **useState** dan untuk lifecycle function adalah **useEffect**.
-- Penggunaan react hooks dalam hal ini useState dan useEffect memudahkan kita untuk memisahkan unrelated logic. Gunakan bila sebelumnya kita dipaksa menggabungkan logic yang tidak relevant berdasarkan lifecycle, dengan react hooks kita bisa memisahkan setiap state dengan setiap lifecycle, seperti dapat dilihat (disini)[https://reactjs.org/docs/hooks-effect.html#tip-use-multiple-effects-to-separate-concerns].
+- Penggunaan react hooks dalam hal ini useState dan useEffect memudahkan kita untuk memisahkan unrelated logic. Gunakan bila sebelumnya kita dipaksa menggabungkan logic yang tidak relevant berdasarkan lifecycle, dengan react hooks kita bisa memisahkan setiap state dengan setiap lifecycle, seperti dapat dilihat [disini](https://reactjs.org/docs/hooks-effect.html#tip-use-multiple-effects-to-separate-concerns).
 ### State Hooks (useState)
 React hooks built in supaya bisa jadi statefull. Merupakan function yang returnnya itu array [state, setState]. state adalah current state, sementara setState adalah function untuk ubah statenya.
 
@@ -76,11 +56,11 @@ React hooks built in supaya bisa jadi statefull. Merupakan function yang returnn
 ### Ref Hooks (useRef)
 #TODO
 
-### Custom Hooks (original documentation) [https://reactjs.org/docs/hooks-custom.html]
+### Custom Hooks [original documentation](https://reactjs.org/docs/hooks-custom.html)
 - Kita dapat membuat hooks function sendiri, dengan membuat hooks function kita dapat share stateful logic function tanpa perlu membuat component baru.
 - Pemanggilan custom hooks function harus ada di top level function (ga boleh ada di dalem if statement, for statement, atau didalam inner function).
 - Sesungguhnya custom hooks merupakan javascript function biasa yang menggunakan konvensional nama diawal dengan `use` dan biasanya memanggil hooks lainnya. Sisanya function itu sangat flexible, bisa untuk 
-- (Use Your Imagination)[https://reactjs.org/docs/hooks-custom.html#useyourimagination] **When to use custom hooks?** -> Ga masalah untuk untuk menolak melakukan abstraksi dengan cepat. Normal kalau code kita mungkin akan jadi lebih panjang (jangan terlalu terburu-buru mengubahnya jadi hooks). Tapi sebisa mungkin dorong diri kita untuk menemukan case-case dimana custom hook dapat: 
+- [Use Your Imagination](https://reactjs.org/docs/hooks-custom.html#useyourimagination) **When to use custom hooks?** -> Ga masalah untuk untuk menolak melakukan abstraksi dengan cepat. Normal kalau code kita mungkin akan jadi lebih panjang (jangan terlalu terburu-buru mengubahnya jadi hooks). Tapi sebisa mungkin dorong diri kita untuk menemukan case-case dimana custom hook dapat: 
    - menyembunyikan complex logic dari UI component yang sebenarnya sederhana
    - membantu kita menguraikan komponen yang berantakan.
 - contoh custom hooks:
@@ -146,13 +126,119 @@ React hooks built in supaya bisa jadi statefull. Merupakan function yang returnn
 #TODO
 
 ### Additional
-- (Hooks FAQ)[https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily]
-- (How to fetch data with React Hooks?)[https://www.robinwieruch.de/react-hooks-fetch-data]
-- (High Order Function)[https://reactjs.org/docs/higher-order-components.html]
-- (Refs and DOM)[https://reactjs.org/docs/refs-and-the-dom.html#:~:text=In%20the%20typical,an%20escape%20hatch.
-] - need to undestand before useRef
+- [Hooks FAQ](https://reactjs.org/docs/hooks-faq.html#how-to-create-expensive-objects-lazily)
+- [How to fetch data with React Hooks?](https://www.robinwieruch.de/react-hooks-fetch-data)
+- [High Order Function](https://reactjs.org/docs/higher-order-components.html)
+- [Refs and DOM](https://reactjs.org/docs/refs-and-the-dom.html#:~:text=In%20the%20typical,an%20escape%20hatch) -> need to undestand before useRef
 
 # React-Redux
+## [Terminology](https://redux.js.org/tutorials/essentials/part-1-overview-concepts#terminology) 
+- Store -> tempat penyimpanan state secara global dalam aplikasi, hanya boleh terdapat 1 store dalam 1 aplikasi
+- Reducer -> merupakan sebuah function yang berperan sebagai pengendali dari action-action yang dapat dilakukan, dan melakukan action-action tersebut.
+- View/App -> yang akan mengsubscribe store tersebut, sehingga ketika ada perubahan pada state tersebut, 
+- Action -> merupakan suatu object yang terdiri dari `{type: "anyType", payload: anyPayload}`. Atau bisa kita anggap sebagai suatu event. view/app akan melakukan dispatch (trigger an action).
+
+## [Flow](https://redux.js.org/tutorials/essentials/part-1-overview-concepts#redux-application-data-flow)
+- Initial setup:
+    - A Redux store is created using a root reducer function
+        - define the store
+            ```js
+            import { configureStore } from '@reduxjs/toolkit'
+            // ...
+
+            const store = configureStore({
+            reducer: {
+                posts: postsReducer,
+                comments: commentsReducer,
+                users: usersReducer
+            }
+            })
+
+            // Infer the `RootState` and `AppDispatch` types from the store itself
+            export type RootState = ReturnType<typeof store.getState>
+            // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+            export type AppDispatch = typeof store.dispatch
+            ```
+
+            for typescript, we need to add this on `app/hooks.ts`, and instead of useDispatch or useSelector, use useAppDispatch and useAppSelector.
+            ```js
+            import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+            import type { RootState, AppDispatch } from './store'
+
+            // Use throughout your app instead of plain `useDispatch` and `useSelector`
+            export const useAppDispatch = () => useDispatch<AppDispatch>()
+            export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+            ```
+        - define the state and reducer using createSlice
+            ```js
+            import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+            import type { RootState } from '../../app/store'
+
+            // Define a type for the slice state
+            interface CounterState {
+            value: number
+            }
+
+            // Define the initial state using that type
+            const initialState: CounterState = {
+            value: 0
+            }
+
+            export const counterSlice = createSlice({
+            name: 'counter',
+            // `createSlice` will infer the state type from the `initialState` argument
+            initialState,
+            reducers: {
+                increment: state => {
+                state.value += 1
+                },
+                decrement: state => {
+                state.value -= 1
+                },
+                // Use the PayloadAction type to declare the contents of `action.payload`
+                incrementByAmount: (state, action: PayloadAction<number>) => {
+                state.value += action.payload
+                }
+            }
+            })
+
+            export const { increment, decrement, incrementByAmount } = counterSlice.actions
+
+            // Other code such as selectors can use the imported `RootState` type
+            export const selectCount = (state: RootState) => state.counter.value
+
+            export default counterSlice.reducer
+            ```
+        
+    - The store calls the root reducer once, and saves the return value as its initial state
+    - When the UI is first rendered, UI components access the current state of the Redux store, and use that data to decide what to render. They also subscribe to any future store updates so they can know if the state has changed. To subscribe, we use this:
+        ```js
+        import React, { useState } from 'react'
+
+        import { useAppSelector, useAppDispatch } from 'app/hooks'
+
+        import { decrement, increment } from './counterSlice'
+
+        export function Counter() {
+        // The `state` arg is correctly typed as `RootState` already
+        const count = useAppSelector(state => state.counter.value)
+        const dispatch = useAppDispatch()
+
+        // omit rendering logic
+        }
+        ```
+- Updates:
+    - Something happens in the app, such as a user clicking a button
+    - The app code dispatches an action to the Redux store, like `dispatch({type: 'counter/increment'})`
+    - The store runs the reducer function again with the previous state and the current action, and saves the return value as the new state
+    - The store notifies all parts of the UI that are subscribed that the store has been updated
+    - Each UI component that needs data from the store checks to see if the parts of the state they need have changed.
+    - Each component that sees its data has changed forces a re-render with the new data, so it can update what's shown on the screen
+
+## Additional
+- [Redux Thunks in Typescript](https://redux.js.org/usage/usage-with-typescript#type-checking-redux-thunks)
+
+
 # Common Error
 ## React Hooks
 - Problem: react component selalu kerender sampai infinite loop
@@ -197,5 +283,5 @@ React hooks built in supaya bisa jadi statefull. Merupakan function yang returnn
         }, [props.selectedChar]); // 3. AWARE THIS
         ```
 
-        Seperti dapat dilihat pada point 1 dan 2 bahwa function fetchdata melakukan update pada state, sehingga itu merupakan side effect yang memungkinkan suatu component melakukan rerender. Apabila dependencies [props.selectedChar] tidak ada, maka function fetchData akan terus dijalankan setiap kali component di render, karena tidak ada dependencies kapan useEffect itu dijalankan. Dengan menambahkan dependecies tersebut, function useEffect hanya akan dijalankakn ketika `props.selectedChar` berubah.
+        Seperti dapat dilihat pada point 1 dan 2 bahwa function fetchdata melakukan update pada state, sehingga itu merupakan side effect yang memungkinkan suatu component melakukan rerender. Apabila dependencies `[props.selectedChar]` tidak ada, maka function fetchData akan terus dijalankan setiap kali component di render, karena tidak ada dependencies kapan useEffect itu dijalankan. Dengan menambahkan dependecies tersebut, function useEffect hanya akan dijalankakn ketika `props.selectedChar` berubah.
         
